@@ -1,0 +1,10 @@
+[
+    { "id": 1, "sabor": "CARNE",      "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 2, "sabor": "FRANGO",     "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 3, "sabor": "PIZZA",      "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 4, "sabor": "QUEIJO",     "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 5, "sabor": "CALABRESA",  "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 6, "sabor": "BRÓCOLIS",   "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 7, "sabor": "MARGUERITA", "preco": "8,99", "img": "/pastel.jpeg" },
+    { "id": 8, "sabor": "PERNIL",     "preco": "8,99", "img": "/pastel.jpeg" }
+  ]

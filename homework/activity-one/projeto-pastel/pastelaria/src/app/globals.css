@@ -1,0 +1,270 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton+SC&family=Bokor&family=League+Spartan:wght@400;500;600;700&display=swap");
+
+/* fundo geral fora do frame */
+.site-root {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #2b2a2a;
+}
+
+:root {
+  /* Ajuste aqui: 1 = tamanho original do Figma, 0.9 = 90% (menor) */
+  --page-scale: 1;
+}
+
+/* frame principal do Figma: 1440 x 1024 */
+.page {
+  width: 1440px;
+  margin: 0 auto;
+  background-color: #f5d5a5;
+  height: 900px; /* altura exata do frame (necessário para o tail 619 + 457) */
+  display: flex;
+  flex-direction: column;
+  transform-origin: top center;
+  transform: scale(var(--page-scale));
+}
+
+/* ================= HEADER / NAVBAR ================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 124px;
+  padding: 0 80px;
+  background-color: #6d4136;
+  color: #d59e63;
+}
+
+/* Logo "Pastelaria do Chinês" */
+.header-logo {
+  font-family: "Bokor", system-ui, sans-serif;
+  font-size: 38px;
+  color: #d59e63;
+}
+
+/* "Home | Sobre nós | Lojas" */
+.header-nav {
+  display: flex;
+  gap: 32px;
+  font-family: "Anton SC", system-ui, sans-serif;
+  font-size: 24px;
+}
+
+.header-nav a {
+  color: #d59e63;
+  text-decoration: none;
+}
+
+.header-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Botões Delivery / Produtos */
+.header-buttons {
+  display: flex;
+  gap: 24px;
+}
+
+/* base do botão */
+.btn-pill {
+  width: 205px;
+  height: 69px;
+  border-radius: 999px;
+  border: 2px solid #cbaa50;
+  cursor: pointer;
+  font-family: "Anton SC", system-ui, sans-serif;
+  font-size: 26px;
+  background-color: #d59e63;
+  color: #6d4136;
+}
+
+.btn-delivery {
+  background-color: #d59e63;
+}
+
+.btn-produtos {
+  background-color: #d59e63;
+}
+
+/* ================= HERO (imagem + texto) ================= */
+
+.hero {
+  position: relative;
+  height: 635px;
+  overflow: hidden;
+}
+
+.hero-image {
+  position: absolute;
+  left: 0px;
+  top: -11px;
+  width: 1500px;
+  height: 630px;
+  background-image: url("/hero-pastel.jpeg");
+  background-repeat: no-repeat;
+  background-size: 1440px 630px;
+  background-position: left top;
+}
+
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* “pelicula” por cima da imagem: preto 30% */
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: #ffffff;
+}
+
+.hero-title {
+  position: absolute;
+  /* coordenadas do Figma considerando que o título está dentro da imagem (offset da imagem: X7 Y6) */
+  left: 617px; /* 624 - 7 */
+  top: 172px; /* 178 - 6 */
+  width: 168px;
+  height: 96px;
+  font-family: "Anton SC", system-ui, sans-serif;
+  font-size: 64px;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.hero-subtitle {
+  position: absolute;
+  /* coordenadas do Figma considerando que o texto longo está dentro da imagem (offset da imagem: X7 Y6) */
+  left: 350px; /* 357 - 7 */
+  top: 268px; /* 274 - 6 */
+  width: 782px;
+  font-family: "League Spartan", system-ui, sans-serif;
+  font-size: 32px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* ================= TAIL (faixa inferior) ================= */
+
+.tail {
+  /* Retângulo bege do Figma: 1440 x 457, cor D59E63 */
+  position: absolute;
+  left: 0;
+  top: 743px;
+  width: 1440px;
+  height: 157;
+  background-color: #d59e63;
+}
+
+/* Botões/frames já ocupam o layout; agora o tail é coordenado */
+.tail-left { position: relative; }
+
+.tail-label {
+  position: absolute;
+  left: 32.22px;
+  top: 13.23px; /* 632.23 - 619 */
+  width: 204.04px;
+  height: 56.85px;
+  margin: 0;
+  font-family: "Anton SC", system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.tail-label-small {
+  position: absolute;
+  left: 65.41px;
+  top: 80px; /* 707.26 - 619 */
+  width: 240.16px;
+  height: 16.58px;
+  margin: 0;
+  font-family: "League Spartan", system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+/* Centro: 2 blocos verticais de sabores */
+.tail-center {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 457px;
+}
+
+.tail-col1 {
+  position: absolute;
+  left: 436px;
+  top: 20px; /* 661 - 619 */
+  width: 174px;
+  height: 100px;
+  font-family: "League Spartan", system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1.05;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tail-col2 {
+  position: absolute;
+  left: 748px;
+  top: 20px; /* 657 - 619 */
+  width: 174px;
+  height: 100px;
+  font-family: "League Spartan", system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 1.05;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tail-col1 span,
+.tail-col2 span {
+  display: block;
+}
+
+/* Direita: desconto */
+.tail-right {
+  position: absolute;
+  left: 1200.81px;
+  top: 0;
+  width: 239.19px;
+  height: 127.9px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.tail-discount-block {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.tail-discount-big {
+  margin: 0;
+  font-family: "Anton SC", system-ui, sans-serif;
+  font-size: 34px;
+  font-weight: 400;
+  color: #ffffff;
+  text-transform: uppercase;
+}
