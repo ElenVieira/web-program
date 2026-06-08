@@ -1,0 +1,212 @@
+/* ============================================================
+   app/produtos/produtos.module.css
+   ============================================================ */
+
+/* Google Fonts — adicione no seu layout.jsx ou _document.jsx:
+   <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Bokor&family=League+Spartan:wght@700&display=swap" rel="stylesheet" />
+*/
+
+/* ── Wrapper geral ── */
+.pageWrapper {
+    width: 1440px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffe0ba;
+    font-family: sans-serif;
+  }
+  
+  /* ══════════════════════════════════════════
+     HEADER  (idêntico à página 1)
+  ══════════════════════════════════════════ */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 124px;
+    padding: 0 80px;
+    background-color: #6d4136;
+    color: #d59e63;
+  }
+  
+  .headerLogo {
+    font-family: "Bokor", system-ui, sans-serif;
+    font-size: 38px;
+    color: #d59e63;
+  }
+  
+  .headerNav {
+    display: flex;
+    gap: 32px;
+    font-family: "Anton SC", system-ui, sans-serif;
+    font-size: 24px;
+  }
+  
+  .headerNav a {
+    color: #d59e63;
+    text-decoration: none;
+  }
+  
+  .headerNav a:hover {
+    text-decoration: underline;
+  }
+  
+  .headerNav span {
+    color: #d59e63;
+  }
+  
+  .headerButtons {
+    display: flex;
+    gap: 24px;
+  }
+  
+  .btnPill {
+    width: 205px;
+    height: 69px;
+    border-radius: 999px;
+    border: 2px solid #cbaa50;
+    cursor: pointer;
+    font-family: "Anton SC", system-ui, sans-serif;
+    font-size: 26px;
+    background-color: #d59e63;
+    color: #6d4136;
+  }
+  
+  .btnDelivery {
+    background-color: #d59e63;
+  }
+  
+  .btnProdutos {
+    background-color: #d59e63;
+  }
+  
+  /* ══════════════════════════════════════════
+     MAIN
+  ══════════════════════════════════════════ */
+  .main {
+    flex: 1;
+    position: relative;
+    padding: 0 80px 60px;
+  }
+  
+  /* ── Botão Carrinho ── */
+  .carrinhoWrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 14px;   /* alinha verticalmente em Y≈138 (relativo ao main) */
+    padding-bottom: 14px;
+  }
+  
+  .btnCarrinho {
+    width: 178px;
+    height: 60px;
+    background-color: #2f2c2c;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: "Anton SC", system-ui, sans-serif;
+    font-size: 26px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  /* ── Grid 4 × 2 ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 226px);
+    grid-template-rows: repeat(2, 241px);
+    gap: 40px 40px;          /* espaçamento entre cards igual ao da foto */
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  /* ── Card individual ── */
+  .card {
+    width: 226px;
+    height: 241px;
+    background-color: #d59e63;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* ── Imagem do pastel ── */
+  .cardImgWrapper {
+    width: 224px;
+    height: 101px;          /* proporção especificada */
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .cardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  
+  /* ── Nome do sabor ── */
+  .cardSabor {
+    width: 178px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    margin-top: 30px;         /* espaço entre imagem e texto */
+    font-family: "League Spartan", system-ui, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-align: center;
+    line-height: 28px;
+    flex-shrink: 0;
+  }
+  
+  /* ── Botão de preço ── */
+  .cardBtn {
+    width: 226px;
+    height: 63px;
+    background-color: #6d4136;
+    border: none;
+    border-radius: 0 0 12px 12px;
+    cursor: pointer;
+    font-family: "League Spartan", system-ui, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cardBtn:hover {
+    background-color: #5a3429;
+  }
+  
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
+  .footer {
+    height: 92px;
+    background-color: #d59e63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .footerText {
+    font-family: "Bokor", system-ui, sans-serif;
+    font-size: 38px;
+    color: #6d4136;
+  }

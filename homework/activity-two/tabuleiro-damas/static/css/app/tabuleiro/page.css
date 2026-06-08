@@ -1,0 +1,140 @@
+/*!**************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./app/tabuleiro/styles/Subdivisao.module.css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************/
+.Subdivisao_subdivisao__ukH22 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border: 1px black solid;
+  cursor: default;
+  position: relative;
+}
+
+.Subdivisao_subdivisao__ukH22.Subdivisao_jogavel__rh6yY {
+  cursor: pointer;
+}
+
+.Subdivisao_preta__9scvz {
+  background-color: #383838;
+}
+
+.Subdivisao_branca__IwtZX {
+  background-color: #eaebef;
+}
+
+.Subdivisao_peca__K507N {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+.Subdivisao_pecaPreta__qI99m {
+  background: linear-gradient(145deg, #5a189a, #8513ef);
+}
+
+.Subdivisao_pecaBranca__WkvEJ {
+  background: linear-gradient(145deg, #f5f5f5, #d4d4d8);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.Subdivisao_dama__ttlf_::after {
+  content: "♛";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.Subdivisao_pecaBranca__WkvEJ.Subdivisao_dama__ttlf_::after {
+  color: #5a189a;
+}
+
+.Subdivisao_selecionada__86nF_ {
+  outline: 3px solid #fbbf24;
+  outline-offset: -3px;
+  z-index: 1;
+}
+
+.Subdivisao_destino__MrlIX {
+  background-color: rgba(34, 197, 94, 0.45) !important;
+}
+
+.Subdivisao_destino__MrlIX .Subdivisao_peca__K507N {
+  opacity: 0;
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./app/tabuleiro/styles/Linha.module.css ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************/
+.Linha_linha__PlVN7 {
+  display: flex;
+}
+
+/*!*************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[5].use[3]!./app/tabuleiro/page.module.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************/
+.page_pagina__vDaKL {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 2rem;
+  gap: 1rem;
+}
+
+.page_cabecalho__nj9FW {
+  text-align: center;
+}
+
+.page_cabecalho__nj9FW h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+}
+
+.page_status__uGfHN {
+  margin: 0 0 0.75rem;
+  color: #cbd5e1;
+}
+
+.page_aviso__riqOj {
+  color: #fbbf24;
+}
+
+.page_botao__x7oEk {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: #8513ef;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.page_botao__x7oEk:hover {
+  background: #6b0fc7;
+}
+
+.page_tabuleiro__IDFGa {
+  display: inline-flex;
+  flex-direction: column;
+  border: 4px solid #0f0f0f;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.page_ajuda__K9Gzx {
+  max-width: 36rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin: 0;
+}
+

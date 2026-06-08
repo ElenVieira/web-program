@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Game</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            font-family: sans-serif;
+        }
+        .character {
+            color: #282828;
+            background-color: lightgray;
+            border: 2px solid #648bc9;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #648bc9;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease, transform 0.2s;
+            color: white;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #345a91;
+        }
+        button:active {
+            transform: translateY(2px);
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .life-bar {
+            position: relative;
+            height: 30px;
+            background-color: #d72929;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            border: 1px solid #282828;
+        }
+        .life-fill {
+            background-color: #489b34;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        .life-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            color: #282828;
+        }
+        .sprite {
+            height: 250px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .sprite img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #root {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .game-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .game-container .character {
+            flex: 1;
+            min-width: 250px;
+        }
+        .log-container {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log-container p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+        .game-over-banner {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .hero-win { background-color: #d4edda; color: #155724; border: 2px solid #28a745; }
+        .villain-win { background-color: #f8d7da; color: #721c24; border: 2px solid #dc3545; }
+        .fled { background-color: #fff3cd; color: #856404; border: 2px solid #ffc107; }
+        .restart-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #648bc9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .restart-btn:hover { background-color: #345a91; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+
+    <script>
+        const { useState, useCallback } = React;
+
+        // ── Configurações do jogo ─────────────────────────────────────────────
+        const HERO_INITIAL = {
+            name: "Batman",
+            life: 100,
+            maxLife: 100,
+            attack: 20,
+            defense: 0,
+            potions: 3,
+            isDefending: false,
+            image: "img/batman.jpg",
+        };
+
+        const VILLAIN_INITIAL = {
+            name: "Coringa",
+            life: 120,
+            maxLife: 120,
+            attack: 18,
+            defense: 0,
+            isDefending: false,
+            image: "img/coringa.jpg",
+        };
+
+        const POTION_HEAL = 30;
+        const DEFENSE_REDUCTION = 0.5;
+        const FLEE_CHANCE = 0.4;
+
+        // ── Utilitários ───────────────────────────────────────────────────────
+        function clamp(value, min = 0, max = 100) {
+            return Math.min(max, Math.max(min, value));
+        }
+
+        function randomBetween(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function calcDamage(attacker) {
+            const base = attacker.attack;
+            const variation = randomBetween(-Math.floor(base * 0.2), Math.floor(base * 0.2));
+            return Math.max(1, base + variation);
+        }
+
+        function applyDamage(target, rawDamage) {
+            const finalDamage = target.isDefending
+                ? Math.floor(rawDamage * (1 - DEFENSE_REDUCTION))
+                : rawDamage;
+            const newLife = clamp(target.life - finalDamage, 0, target.maxLife);
+            return { updatedTarget: { ...target, life: newLife, isDefending: false }, finalDamage };
+        }
+
+        // ── Hook useGameManager ───────────────────────────────────────────────
+        function useGameManager() {
+            const [hero, setHero] = useState({ ...HERO_INITIAL });
+            const [villain, setVillain] = useState({ ...VILLAIN_INITIAL });
+            const [isHeroTurn, setIsHeroTurn] = useState(true);
+            const [log, setLog] = useState(["⚔️ O combate começou! É a vez do Batman."]);
+            const [gameOver, setGameOver] = useState(null);
+
+            const addLog = useCallback((message) => {
+                setLog((prev) => [...prev, message]);
+            }, []);
+
+            const villainTurn = useCallback((currentHero, currentVillain) => {
+                const villainLifePercent = currentVillain.life / currentVillain.maxLife;
+                const action = villainLifePercent < 0.3 && Math.random() < 0.5 ? "defense" : "attack";
+
+                setTimeout(() => {
+                    if (action === "defense") {
+                        setVillain((v) => ({ ...v, isDefending: true }));
+                        addLog("🛡️ Coringa se preparou para defender no próximo ataque!");
+                    } else {
+                        const rawDamage = calcDamage(currentVillain);
+                        const { updatedTarget, finalDamage } = applyDamage(currentHero, rawDamage);
+                        const blocked = currentHero.isDefending ? ` (bloqueou parte: ${rawDamage - finalDamage} reduzido)` : "";
+                        addLog(`🃏 Coringa atacou e causou ${finalDamage} de dano!${blocked}`);
+                        setHero({ ...updatedTarget });
+
+                        if (updatedTarget.life <= 0) {
+                            addLog("💀 O Batman foi derrotado! Game Over.");
+                            setGameOver("villain_win");
+                            return;
+                        }
+                    }
+
+                    addLog("🔄 Vez do Batman.");
+                    setIsHeroTurn(true);
+                }, 900);
+            }, [addLog]);
+
+            const handleAction = useCallback((action) => {
+                if (!isHeroTurn || gameOver) return;
+
+                setIsHeroTurn(false);
+
+                let updatedHero = { ...hero, isDefending: false };
+                let updatedVillain = { ...villain };
+
+                switch (action) {
+                    case "attack": {
+                        const rawDamage = calcDamage(updatedHero);
+                        const { updatedTarget, finalDamage } = applyDamage(updatedVillain, rawDamage);
+                        updatedVillain = updatedTarget;
+                        const blocked = villain.isDefending ? ` (Coringa defendeu, ${rawDamage - finalDamage} bloqueado)` : "";
+                        addLog(`🦇 Batman atacou e causou ${finalDamage} de dano!${blocked}`);
+                        setHero(updatedHero);
+                        setVillain(updatedVillain);
+                        if (updatedVillain.life <= 0) {
+                            addLog("🏆 O Coringa foi derrotado! Batman venceu!");
+                            setGameOver("hero_win");
+                            return;
+                        }
+                        break;
+                    }
+                    case "defense": {
+                        updatedHero = { ...updatedHero, isDefending: true };
+                        addLog("🛡️ Batman assumiu postura defensiva! Próximo ataque causará menos dano.");
+                        setHero(updatedHero);
+                        break;
+                    }
+                    case "usePotion": {
+                        if (updatedHero.potions <= 0) {
+                            addLog("🧪 Sem poções restantes!");
+                            setIsHeroTurn(true);
+                            return;
+                        }
+                        const healAmount = Math.min(POTION_HEAL, updatedHero.maxLife - updatedHero.life);
+                        updatedHero = {
+                            ...updatedHero,
+                            life: updatedHero.life + healAmount,
+                            potions: updatedHero.potions - 1,
+                        };
+                        addLog(`🧪 Herói usou uma poção e recuperou ${healAmount} de vida! (${updatedHero.potions} poções restantes)`);
+                        setHero(updatedHero);
+                        break;
+                    }
+                    case "flee": {
+                        const success = Math.random() < FLEE_CHANCE;
+                        if (success) {
+                            addLog("🏃 Batman conseguiu fugir! Batalha encerrada.");
+                            setGameOver("fled");
+                            return;
+                        } else {
+                            addLog("🏃 Batman tentou fugir, mas falhou! O Coringa aproveitou...");
+                            setHero(updatedHero);
+                        }
+                        break;
+                    }
+                    default:
+                        setIsHeroTurn(true);
+                        return;
+                }
+
+                addLog("⏳ Vez do Vilão...");
+                villainTurn(updatedHero, updatedVillain);
+            }, [hero, villain, isHeroTurn, gameOver, addLog, villainTurn]);
+
+            const resetGame = useCallback(() => {
+                setHero({ ...HERO_INITIAL });
+                setVillain({ ...VILLAIN_INITIAL });
+                setIsHeroTurn(true);
+                setLog(["⚔️ Nova batalha! É a vez do Batman."]);
+                setGameOver(null);
+            }, []);
+
+            return { hero, villain, isHeroTurn, log, gameOver, handleAction, resetGame };
+        }
+
+        // ── Componente Character ──────────────────────────────────────────────
+        function Character({ data, isHero, onAction, isHeroTurn }) {
+            const lifePercent = Math.max(0, (data.life / data.maxLife) * 100) + "%";
+            return React.createElement("div", { className: "character" },
+                React.createElement("div", { className: "life-bar" },
+                    React.createElement("div", { className: "life-fill", style: { width: lifePercent } }),
+                    React.createElement("span", { className: "life-text" }, data.life + " / " + data.maxLife)
+                ),
+                React.createElement("div", { className: "sprite" },
+                    React.createElement("img", { src: data.image, alt: data.name })
+                ),
+                React.createElement("h2", null, data.name + " - " + (isHero ? "Herói" : "Vilão")),
+                isHero && data.potions !== undefined &&
+                    React.createElement("p", null, "🧪 Poções: " + data.potions),
+                isHero && onAction &&
+                    React.createElement("div", { className: "actions" },
+                        React.createElement("button", { disabled: !isHeroTurn, onClick: () => onAction("attack") }, "Atacar"),
+                        React.createElement("button", { disabled: !isHeroTurn, onClick: () => onAction("defense") }, "Defender"),
+                        React.createElement("button", { disabled: !isHeroTurn || data.potions <= 0, onClick: () => onAction("usePotion") }, "Usar Poção"),
+                        React.createElement("button", { disabled: !isHeroTurn, onClick: () => onAction("flee") }, "Correr")
+                    )
+            );
+        }
+
+        // ── Componente App ────────────────────────────────────────────────────
+        function App() {
+            const { hero, villain, isHeroTurn, log, gameOver, handleAction, resetGame } = useGameManager();
+
+            const gameOverMessages = {
+                hero_win:    { text: "🏆 Você venceu! O Coringa foi derrotado!", cls: "hero-win" },
+                villain_win: { text: "💀 Game Over! O Batman foi derrotado.", cls: "villain-win" },
+                fled:        { text: "🏃 Batman fugiu da batalha!", cls: "fled" },
+            };
+
+            return React.createElement("div", null,
+                React.createElement("h1", { style: { textAlign: "center" } }, "⚔️ Prova Game"),
+
+                gameOver && React.createElement("div", { className: "game-over-banner " + gameOverMessages[gameOver].cls },
+                    gameOverMessages[gameOver].text
+                ),
+
+                React.createElement("div", { className: "game-container" },
+                    React.createElement(Character, {
+                        data: villain,
+                        isHero: false,
+                        isHeroTurn: isHeroTurn
+                    }),
+                    React.createElement(Character, {
+                        data: hero,
+                        isHero: true,
+                        onAction: handleAction,
+                        isHeroTurn: isHeroTurn
+                    })
+                ),
+
+                gameOver && React.createElement("button", { className: "restart-btn", onClick: resetGame }, "🔄 Jogar Novamente"),
+
+                React.createElement("div", { className: "log-container" },
+                    [...log].reverse().map((entry, i) =>
+                        React.createElement("p", { key: i }, entry)
+                    )
+                )
+            );
+        }
+
+        // ── Render ────────────────────────────────────────────────────────────
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
